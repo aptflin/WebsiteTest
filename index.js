@@ -4,7 +4,7 @@ const WebSocket = require('ws');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 // ✅ 讓 Express 公開整個 src 資料夾給瀏覽器使用
 app.use('/src', express.static(path.join(__dirname, 'src')));
