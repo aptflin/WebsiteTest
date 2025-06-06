@@ -1,0 +1,167 @@
+/* 設定整體尺寸與背景 */
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top right, #dff6e6, #ccf3f9);
+  font-family: "M PLUS 1p", sans-serif;
+  font-weight: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  /* 背景圖片 */
+  background-image: url('../src/BG.png');
+  background-size: cover; /* 讓背景圖片撐滿畫面 */
+  background-repeat: no-repeat; /* 不要重複平舖 */
+  background-position: center center; /* 圖片置中 */
+}
+
+/* 容器置中 */
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* 上方文字 */
+.waiting-text {
+  font-size: 30px;
+  color: #47A99C;
+  margin-bottom: 40px;
+  font-weight: 900;
+}
+
+/* 三位玩家的區塊 */
+.players {
+  position: relative;
+  /* 用相對定位 */
+  width: 400px;
+  /* 寬度可以微調 */
+  height: 100px;
+  margin-bottom: 50px;
+}
+
+/* 三位玩家的區塊 */
+.players {
+  position: relative;
+  width: 400px;
+  height: 100px;
+  margin-bottom: 50px;
+}
+
+/* 三個小玩家位置設定 */
+.player-b,
+.player-r,
+.player-g {
+  position: absolute;
+  /* 小球用絕對定位 */
+  top: 0;
+  transform: translateX(-50%);
+  /* 讓中心點對齊 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 個別調整位置 */
+.player-b {
+  left: 0%;
+  /* 藍色玩家偏左 */
+}
+
+.player-r {
+  left: 50%;
+  /* 紅色玩家置中 */
+}
+
+.player-g {
+  left: 100%;
+  /* 白色玩家偏右 */
+}
+
+/* 玩家圓形標示 */
+.circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.blue.off {
+  background-color: #8BCBFF;
+  box-shadow: 0 0 20px #8BCBFF;
+}
+
+.blue.on {
+  background-color: #ffffff;
+  box-shadow: 0 0 20px #8BCBFF;
+  box-shadow: 0 0 20px #8BCBFF;
+  box-shadow: 0 0 20px #8BCBFF;
+}
+
+.red.off {
+  background-color: #FF7E7E;
+  box-shadow: 0 0 20px #FF7E7E;
+}
+
+.red.on {
+  background-color: #ffffff;
+  box-shadow: 0 0 20px #FF7E7E;
+  box-shadow: 0 0 20px #FF7E7E;
+  box-shadow: 0 0 20px #FF7E7E;
+}
+
+.green.off {
+  background-color: #A8FF71;
+  box-shadow: 0 0 20px #A8FF71;
+}
+
+.green.on {
+  background-color: #ffffff;
+  box-shadow: 0 0 20px #AAFF71;
+  box-shadow: 0 0 20px #AAFF71;
+  box-shadow: 0 0 20px #AAFF71;
+}
+
+/* 玩家文字標籤 */
+.label {
+  color: #ffffff;
+  font-weight: 900;
+  font-size: 17px;
+  line-height: 1.2;
+  margin-top: 3px;
+  text-shadow: 1px 1px 15px #1b61585a;
+  text-shadow: 1px 1px 5px #1b61585a;
+  text-shadow: 1px 1px 5px #0000005a;
+}
+
+.label.you {
+  color: #2d9966;
+  text-shadow: none;
+  margin-top: 10px;
+}
+
+/* READY 按鈕樣式 */
+.ready-button {
+  background-color: #FFE587;
+  color: #D9AD0F;
+  font-weight: 900;
+  border: none;
+  border-radius: 50px;
+  padding: 5px 30px;
+  font-size: 23px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 內陰影 inner shadow */
+}
+
+.ready-button:hover {
+  background-color: #ffd94c;
+}
