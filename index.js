@@ -4,32 +4,34 @@ const WebSocket = require('ws');
 const path = require('path');
 
 const app = express();
-const port = 3000;
-
-// ✅ 讓 Express 公開整個 src 資料夾給瀏覽器使用
-app.use('/src', express.static(path.join(__dirname, 'src')));
-
-// ✅ 回傳 index.html 作為首頁
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-wss.on('connection', ws => {
-  console.log('Client connected via WebSocket');
+const port = process.env.PORT || 3000;
 
-  ws.on('message', message => {
-    console.log(`Received: ${message}`);
-    ws.send(`Echo: ${message}`);
+// serve 靜態檔案
+app.use(express.static(path.join(__dirname)));
+
+// 當有 WebSocket client 連上
+wss.on('connection', (ws) => {
+  console.log('🔌 Client connected');
+
+  ws.on('message', (message) => {
+    console.log('📩 Received:', message.toString());
+
+    // 廣播給所有其他 client（包含自己或不含都可以控制）
+    wss.clients.forEach((client) => {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(message.toString());
+      }
+    });
   });
 
   ws.on('close', () => {
-    console.log('Client disconnected');
+    console.log('❌ Client disconnected');
   });
 });
 
 server.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  console.log(`🚀 Server is running at http://localhost:${port}`);
 });
