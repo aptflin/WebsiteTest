@@ -1,0 +1,115 @@
+/* 背景設定 */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top right, #dff6e6, #ccf3f9);
+  font-family: "M PLUS 1p", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  /* 背景圖片 */
+  background-image: url('../src/BG.png');
+  background-size: cover;
+  /* 讓背景圖片撐滿畫面 */
+  background-repeat: no-repeat;
+  /* 不要重複平舖 */
+  background-position: center center;
+  /* 圖片置中 */
+}
+
+/* 整體容器 */
+.container {
+  width: 844px;
+  height: 390px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 左上光效 */
+.left-light {
+  position: absolute;
+  top: 0;
+  left: 15;
+  width: 300px; /* 可以微調 */
+  opacity: 0.9;
+  z-index: 0; /* 比 character 更低 */
+}
+
+/* 左上角角色地圖 */
+.character {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  width: 180px;
+  /* 可以微調大小 */
+}
+
+/* 中間 round 文字 */
+.round-info {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.round-title {
+  font-size: 24px;
+  color: #2d9999;
+  font-weight: 900;
+  margin: 0;
+}
+
+.round-number {
+  font-size: 48px;
+  color: #2d9999;
+  font-weight: 900;
+  margin: 0;
+}
+
+.arrow {
+  position: absolute;
+  top: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: auto;
+  transform-style: preserve-3d; /* ⭐保持3D空間感 */
+  transition: transform 0.1s linear; /* ⭐讓旋轉滑順 */
+  z-index: 3;
+}
+
+/* 右下光效 */
+.right-light {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px; /* 可以微調 */
+  opacity: 0.9;
+  z-index: 0; /* 比 goal 更低 */
+}
+
+/* 右下角 goal 關卡路徑 */
+.goal {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 800px;
+}
+
+/* 左下 GOAL! 文字 */
+.goal-text {
+  position: absolute;
+  bottom: 5px;
+  right: 30px;
+  color: white;
+  font-weight: 900;
+  font-size: 28px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* 讓字有陰影更清楚 */
+  z-index: 5; /* 確保文字在最上層 */
+}
