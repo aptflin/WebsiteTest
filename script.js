@@ -1,8 +1,10 @@
+console.log('我有進來script.js')
 let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
 
 let controlTD = document.querySelector('.controlTD');
-controlTD.value = 0
-console.log('controlTD.value')
+controlTD.addEventListener('input',(event) =>{
+    ws.send(JSON.stringify({'slider1': controlTD.value}))
+})
 
 ws.addEventListener('open',(event) =>{
     console.log('websocket opend')
