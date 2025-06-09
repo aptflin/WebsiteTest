@@ -42,26 +42,40 @@
 
 
   <!--先放在這邊改天再搬家測試-->
-  <div id="circle" style="width: 50px;
+  <div id="circleC" style="width: 50px;
       height: 50px;
       border-radius: 50%;
       background-color: gray;
       transition: background-color 0.3s;"></div>
   <h3>青色</h3>
-  <input type="checkbox" id="toggleSwitch">
+  <div id="circleM" style="width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: gray;
+      transition: background-color 0.3s;"></div>
+  <h3>洋紅</h3>
+  <div id="circleY" style="width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: gray;
+      transition: background-color 0.3s;"></div>
+  <h3>黃色</h3>
+  <div id="circleW" style="width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: gray;
+      transition: background-color 0.3s;"></div>
+  <h3>白色</h3>
+  <!--<input type="checkbox" id="toggleSwitch">-->
 
   <script>
     let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
-    const circle = document.getElementById("circle");
-    const toggle = document.getElementById("toggleSwitch");
+    const circleC = document.getElementById("circleC");
+    const circleM = document.getElementById("circleM");
+    const circleY = document.getElementById("circleY");
+    const circleW = document.getElementById("circleW");
+    //const toggleC = document.getElementById("toggleSwitch");
 
-    /*toggle.addEventListener("change", () => {
-      if (toggle.checked) {
-        circle.style.backgroundColor = "cyan"; // switch 開
-      } else {
-        circle.style.backgroundColor = "gray"; // switch 關
-      }
-    });*/
     ws.addEventListener('message', (message) => {
       if (message.data == 'ping') {
         ws.send('pong');
@@ -70,18 +84,45 @@
 
       let data = JSON.parse(message.data);
       if ('colorC' in data) {
-        let val = data['colorC'];
-        if(val == 1){
-          toggle.checked = true;
-          circle.style.backgroundColor = "cyan";
+        let valC = data['colorC'];
+        if(valC == 1){
+          //toggleC.checked = true;
+          circleC.style.backgroundColor = "cyan";
         }else{
-          toggle.checked = false;
-          circle.style.backgroundColor = "gray";
+          //toggleC.checked = false;
+          circleC.style.backgroundColor = "gray";
         }
-
       }
-      console.log(data);
-      console.log('這是我們的colorC'+ val);
+      if ('colorM' in data) {
+        let valM = data['colorM'];
+        if(valM == 1){
+          //toggleC.checked = true;
+          circleM.style.backgroundColor = "magenta";
+        }else{
+          //toggleC.checked = false;
+          circleM.style.backgroundColor = "gray";
+        }
+      }
+      if ('colorY' in data) {
+        let valY = data['colorY'];
+        if(valY == 1){
+          //toggleC.checked = true;
+          circleY.style.backgroundColor = "yellow";
+        }else{
+          //toggleC.checked = false;
+          circleY.style.backgroundColor = "gray";
+        }
+      }
+      if ('colorW' in data) {
+        let valW = data['colorW'];
+        if(valW == 1){
+          //toggleC.checked = true;
+          circleW.style.backgroundColor = "white";
+        }else{
+          //toggleC.checked = false;
+          circleW.style.backgroundColor = "gray";
+        }
+      }
     });
   </script>
 </body>
