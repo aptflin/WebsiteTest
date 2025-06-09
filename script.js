@@ -1,10 +1,6 @@
 console.log('我有進來script.js')
 let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
 
-
-let controledByTD = document.querySelector('.controledByTD');
-
-
 //林屁屁會用網頁測控TD了ㄎㄎ 
 let controlTD = document.querySelector('.controlTD');
 controlTD.addEventListener('input',(event) =>{
@@ -15,6 +11,9 @@ ws.addEventListener('open',(event) =>{
     console.log('websocket opend')
 });
 
+
+//TD>網頁
+let controledByTD = document.querySelector('.controledByTD');
 ws.addEventListener('message',(message) =>{
     if (message.data == 'ping'){
         ws.send('pong');

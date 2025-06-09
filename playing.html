@@ -33,9 +33,55 @@
       <h2 class="goal-text"></h2>
     </div>
   </div>
-  <!--<button onclick= 'window.location.href = "index.html"';> 上一頁 </button>-->  
+  <button onclick='window.location.href = "index.html"' ;> 上一頁 </button>
+  <!--<h2>control TD</h2>
+  <input type="range" class="controlTD">
+  <h2>controled by TD</h2>
+  <input type="range" class="controledByTD">-->
   <script src="src/playing.js"></script>
 
+
+  <!--先放在這邊改天再搬家測試-->
+  <div id="circle" style="width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: gray;
+      transition: background-color 0.3s;"></div>
+  <h3>青色</h3>
+  <input type="checkbox" id="toggleSwitch">
+
+  <script>
+    let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
+    const circle = document.getElementById("circle");
+    const toggle = document.getElementById("toggleSwitch");
+
+    /*toggle.addEventListener("change", () => {
+      if (toggle.checked) {
+        circle.style.backgroundColor = "cyan"; // switch 開
+      } else {
+        circle.style.backgroundColor = "gray"; // switch 關
+      }
+    });*/
+    ws.addEventListener('message', (message) => {
+      if (message.data == 'ping') {
+        ws.send('pong');
+        return
+      }
+
+      let data = JSON.parse(message.data);
+      if ('colorC' in data) {
+        let val = data['colorC'];
+        if(val == 1){
+          toggle.checked = true;
+        }else{
+          toggle.checked = false;
+        }
+
+      }
+      console.log(data);
+      console.log('這是我們的colorC'+ val);
+    });
+  </script>
 </body>
 
 </html>
