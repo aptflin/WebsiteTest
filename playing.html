@@ -55,13 +55,13 @@
     const circle = document.getElementById("circle");
     const toggle = document.getElementById("toggleSwitch");
 
-    /*toggle.addEventListener("change", () => {
+    toggle.addEventListener("change", () => {
       if (toggle.checked) {
         circle.style.backgroundColor = "cyan"; // switch 開
       } else {
         circle.style.backgroundColor = "gray"; // switch 關
       }
-    });*/
+    });
     ws.addEventListener('message', (message) => {
       if (message.data == 'ping') {
         ws.send('pong');
