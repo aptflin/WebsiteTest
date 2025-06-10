@@ -12,14 +12,10 @@ html {
   align-items: center;
   overflow: hidden;
 
-  /* 背景圖片 */
-  background-image: url('../src/BG.png');
+  background: radial-gradient(circle at 40% 40%, #fefadc, #e3ffef, #c9fff7);
   background-size: cover;
-  /* 讓背景圖片撐滿畫面 */
   background-repeat: no-repeat;
-  /* 不要重複平舖 */
   background-position: center center;
-  /* 圖片置中 */
 }
 
 /* 整體容器 */
@@ -27,17 +23,19 @@ html {
   width: 844px;
   height: 390px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* 左上光效 */
 .left-light {
   position: absolute;
-  top: 0;
-  left: 15;
-  width: 300px; /* 可以微調 */
+  top: -80px;
+  left: -90px;
+  width: 400px;
+  /* 可以微調 */
   opacity: 0.9;
-  z-index: 0; /* 比 character 更低 */
+  z-index: 0;
+  /* 比 character 更低 */
 }
 
 /* 左上角角色地圖 */
@@ -79,27 +77,31 @@ html {
   transform: translateX(-50%);
   width: 120px;
   height: auto;
-  transform-style: preserve-3d; /* ⭐保持3D空間感 */
-  transition: transform 0.1s linear; /* ⭐讓旋轉滑順 */
+  transform-style: preserve-3d;
+  /* ⭐保持3D空間感 */
+  transition: transform 0.1s linear;
+  /* ⭐讓旋轉滑順 */
   z-index: 3;
 }
 
 /* 右下光效 */
 .right-light {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 300px; /* 可以微調 */
+  bottom: -90px;
+  right: -130px;
+  width: 400px;
+  /* 可以微調 */
   opacity: 0.9;
-  z-index: 0; /* 比 goal 更低 */
+  z-index: 0;
+  /* 比 goal 更低 */
 }
 
 /* 右下角 goal 關卡路徑 */
 .goal {
   position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 800px;
+  bottom: -110px;
+  right: -70px;
+  width: 400px;
 }
 
 /* 左下 GOAL! 文字 */
@@ -110,6 +112,58 @@ html {
   color: white;
   font-weight: 900;
   font-size: 28px;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* 讓字有陰影更清楚 */
-  z-index: 5; /* 確保文字在最上層 */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  /* 讓字有陰影更清楚 */
+  z-index: 5;
+  /* 確保文字在最上層 */
 }
+
+
+/*下面都是新加的!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/* 光球容器 */
+.color-lights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* 不影響點擊行為 */
+  z-index: 3;
+}
+
+/* 單顆光球共用樣式 */
+.light-ball {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  opacity: 0;
+  box-shadow: 0 0 20px transparent;
+  transition: all 0.5s ease;
+}
+
+/* 顏色亮起樣式 */
+.white.active {
+  background-color: white;
+  box-shadow: 0 0 20px white;
+  opacity: 1;
+}
+
+.yellow.active {
+  background-color: yellow;
+  box-shadow: 0 0 20px yellow;
+  opacity: 1;
+}
+
+.magenta.active {
+  background-color: magenta;
+  box-shadow: 0 0 20px magenta;
+  opacity: 1;
+}
+
+.cyan.active {
+  background-color: cyan;
+  box-shadow: 0 0 20px cyan;
+  opacity: 1;
+}
+

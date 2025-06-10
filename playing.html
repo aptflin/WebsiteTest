@@ -14,7 +14,7 @@
     <!-- 左上角光效 -->
     <img src="src/leftlight.png" class="left-light" alt="左光">
     <!-- 左上角色圖 -->
-    <img src="src/character.png" class="character" alt="角色地圖">
+    <img src="src/characterRed.png" class="character" alt="角色地圖">
 
     <!-- 中央 Round 標題 -->
     <div class="round-info">
@@ -30,50 +30,27 @@
       <img src="src/rightlight.png" class="right-light" alt="右光">
       <!-- 右下角 GOAL -->
       <img src="src/goal.png" class="goal" alt="終點路徑">
-      <h2 class="goal-text"></h2>
+      <h2 class="goal-text">GOAL!</h2>
+
+      <!-- 光球回饋 --> <!-- 新加了這個div class!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+      <div class="color-lights">
+        <div class="light-ball white" style="top: 304.5px; left: 585px;"></div>
+        <div class="light-ball yellow" style="top: 256.5px; left: 638px;"></div>
+        <div class="light-ball magenta" style="top: 220.5px; left: 700px;"></div>
+        <div class="light-ball cyan" style="top: 196.5px; left: 765px;"></div>
+      </div>
+
     </div>
   </div>
+
   <button onclick='window.location.href = "index.html"' ;> 上一頁 </button>
-  <!--<h2>control TD</h2>
-  <input type="range" class="controlTD">
-  <h2>controled by TD</h2>
-  <input type="range" class="controledByTD">-->
-  <script src="src/playing.js"></script>
 
-
-  <!--先放在這邊改天再搬家測試-->
-  <div id="circleC" style="width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: gray;
-      transition: background-color 0.3s;"></div>
-  <h3>青色</h3>
-  <div id="circleM" style="width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: gray;
-      transition: background-color 0.3s;"></div>
-  <h3>洋紅</h3>
-  <div id="circleY" style="width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: gray;
-      transition: background-color 0.3s;"></div>
-  <h3>黃色</h3>
-  <div id="circleW" style="width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: gray;
-      transition: background-color 0.3s;"></div>
-  <h3>白色</h3>
-  
   <script>
     let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
-    const circleC = document.getElementById("circleC");
-    const circleM = document.getElementById("circleM");
-    const circleY = document.getElementById("circleY");
-    const circleW = document.getElementById("circleW");
-    //const toggleC = document.getElementById("toggleSwitch");
+    const ballCyan = document.querySelectorAll('.light-ball.cyan');
+    const ballMagenta = document.querySelectorAll('.light-ball.magenta');
+    const ballYellow = document.querySelectorAll('.light-ball.yellow');
+    const ballWhite = document.querySelectorAll('.light-ball.white');
 
     ws.addEventListener('message', (message) => {
       if (message.data == 'ping') {
@@ -84,46 +61,45 @@
       let data = JSON.parse(message.data);
       if ('colorC' in data) {
         let valC = data['colorC'];
-        if(valC == 1){
+        if (valC == 1) {
           //toggleC.checked = true;
-          circleC.style.backgroundColor = "cyan";
-        }else{
-          //toggleC.checked = false;
-          circleC.style.backgroundColor = "gray";
+          ballCyan.forEach((cyan) => {
+            cyan.classList.add('active');
+          });
         }
       }
       if ('colorM' in data) {
         let valM = data['colorM'];
-        if(valM == 1){
+        if (valM == 1) {
           //toggleC.checked = true;
-          circleM.style.backgroundColor = "magenta";
-        }else{
-          //toggleC.checked = false;
-          circleM.style.backgroundColor = "gray";
+          ballMagenta.forEach((magenta) => {
+            magenta.classList.add('active');
+          });
         }
       }
       if ('colorY' in data) {
         let valY = data['colorY'];
-        if(valY == 1){
+        if (valY == 1) {
           //toggleC.checked = true;
-          circleY.style.backgroundColor = "yellow";
-        }else{
-          //toggleC.checked = false;
-          circleY.style.backgroundColor = "gray";
+          ballYellow.forEach((yellow) => {
+            yellow.classList.add('active');
+          });
         }
       }
       if ('colorW' in data) {
         let valW = data['colorW'];
-        if(valW == 1){
+        if (valW == 1) {
           //toggleC.checked = true;
-          circleW.style.backgroundColor = "white";
-        }else{
-          //toggleC.checked = false;
-          circleW.style.backgroundColor = "gray";
+          ballWhite.forEach((white) => {
+            white.classList.add('active');
+          });
         }
       }
     });
   </script>
+
+
+
 </body>
 
 </html>

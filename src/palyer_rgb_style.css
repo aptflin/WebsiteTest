@@ -12,11 +12,10 @@ body {
   align-items: center;
   overflow: hidden;
 
-  /* 背景圖片 */
-  background-image: url('../src/BG.png');
-  background-size: cover; /* 讓背景圖片撐滿畫面 */
-  background-repeat: no-repeat; /* 不要重複平舖 */
-  background-position: center center; /* 圖片置中 */
+  background: radial-gradient(circle at 40% 40%, #fefadc, #e3ffef, #c9fff7);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 /* 容器置中 */

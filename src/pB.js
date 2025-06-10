@@ -41,11 +41,6 @@ async function changeRedStatu(){
                     blue.classList.add('on');            
                 });
             }
-            /*balls.forEach((green) => {        
-                
-                green.classList.remove('off');
-                green.classList.add('on');            
-            });*/
 
         }
     } catch (error) {
