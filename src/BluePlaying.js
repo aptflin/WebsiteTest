@@ -1,5 +1,4 @@
-window.addEventListener('DOMContentLoaded', ()=>{
-    const arrow = document.querySelector('.arrow');
+const arrow = document.querySelector('.arrow');
 
 let lastBulu = null;
 let direction = "stop";
@@ -47,5 +46,4 @@ window.addEventListener('deviceorientation', function(event) {
   }
 
 }, true);
-})
 
