@@ -68,7 +68,9 @@ onSnapshot(gameRef, (docSnap) => {
         });
     });
 
-    if (players.Red && players.Blue && players.Green) {
+    let alreadyRedirected = false;
+    if (players.Red && players.Blue && players.Green && !alreadyRedirected) {
+        alreadyRedirected = true;
         window.location.href = 'BluePlaying.html';
     }
 });
