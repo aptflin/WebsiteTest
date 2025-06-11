@@ -3,8 +3,22 @@ const arrow = document.querySelector('.arrow');
 let lastBulu = null;
 let direction = "stop";
 
-window.addEventListener('deviceorientation', function(event) {
-  let gamma = event.gamma;
+arrow.addEventListener("click", function () {
+  if (typeof DeviceOrientationEvent.requestPermission === "function") {
+    DeviceOrientationEvent.requestPermission().then((permissionState) => {
+      if (permissionState === "granted") {
+        startGyro();
+      } else {
+        alert("請允許存取裝置方向！");
+      }
+    });
+  } else {
+    rotating();
+  }
+});
+
+function rotating(){
+    let gamma = event.gamma;
   let bulu = 90 - (-gamma);
 
   if (bulu > 160) {
@@ -44,6 +58,10 @@ window.addEventListener('deviceorientation', function(event) {
   } else {
     document.body.style.transform = "rotate(0deg)";
   }
+}
 
-}, true);
+/*window.addEventListener('deviceorientation', function(event) {
+  
+
+}, true);*/
 
