@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>DeviceOrientation Demo</title>
+  <style>
+    @viewport {
+      orientation: portrait;
+    }
+
+    html,
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-color: beige;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: all 0.5s ease-out;
+      color: black;
+    }
+
+    .arrow {
+      max-width: 100px;
+      /* ⭐讓圖片不會超出視窗 */
+      max-height: 100px;
+      /* ⭐讓圖片不會超出視窗 */
+      transform-style: preserve-3d;
+      /* ⭐保持3D空間感 */
+      transition: transform 0.1s linear;
+      /* ⭐讓旋轉滑順 */
+      z-index: 3;
+    }
+  </style>
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="title">這個可以用按鈕控制正轉反轉</div>
+  <img src="src/untitled.png" class="arrow" alt="箭頭提示">
+  <div id="number">0</div>
+
+  <button onclick="turnOn()">正轉</button>
+  <button onclick="turnOff()">反轉</button>
+  <button onclick="stop()">停止</button>
+
+
+  <script>
+    function turnOn() {
+      fetch('/led/on');
+    }
+    function turnOff() {
+      fetch('/led/off');
+    }
+    function stop() {
+      fetch('/led/stop');
+    }
+  </script>
+  
+  <script src="src/playing to arduino.js"></script>
+</body>
+
+</html>
