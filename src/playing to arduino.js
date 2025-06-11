@@ -1,5 +1,5 @@
 const arrow = document.querySelector('.arrow');
-const numberDisplay = document.getElementById('number');
+const numberDisplay = document.querySelector('number');
 
 let lastBulu = null;
 let direction = "stop";
