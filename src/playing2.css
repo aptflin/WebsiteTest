@@ -73,8 +73,7 @@ html {
 .arrow {
   position: absolute;
   top: 180px;
-  left: 50%;
-  transform: translateX(-50%);
+  left:42.5%;
   width: 120px;
   height: auto;
   transform-style: preserve-3d;
