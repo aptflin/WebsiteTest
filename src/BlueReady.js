@@ -49,7 +49,9 @@ async function changeRedStatu(){
 } 
 
 // 🎯 監聽 Firestore，隨時更新畫面
-onSnapshot(gameRef, (docSnap) => {
+let alreadyRedirected = false;
+
+onSnapshot(gameRef, async (docSnap) => {
     const players = docSnap.data().players;
 
     const playerColors = {
@@ -68,12 +70,24 @@ onSnapshot(gameRef, (docSnap) => {
         });
     });
 
-    let alreadyRedirected = false;
+    // ✅ 如果三人都已準備，跳轉並重置
     if (players.Red && players.Blue && players.Green && !alreadyRedirected) {
         alreadyRedirected = true;
-        window.location.href = 'BluePlaying.html';
+
+        // 🔁 先重置 Firestore 狀態
+        await updateDoc(gameRef, {
+            "players.Red": false,
+            "players.Blue": false,
+            "players.Green": false
+        });
+
+        // ⏱ 稍微等一下再跳轉，避免 race condition
+        setTimeout(() => {
+            window.location.href = 'BluePlaying.html';
+        }, 300); 
     }
 });
+
 
 
 window.addEventListener("DOMContentLoaded", () => {
