@@ -6,6 +6,36 @@
   <meta name="viewport" content="width=844, height=390, initial-scale=1.0">
   <title>Round Start</title>
   <link rel="stylesheet" href="src/playing2.css">
+  <style>
+    @viewport {
+      orientation: portrait;
+    }
+
+    html,
+    body {
+      width: 100vw;
+      height: 100vh;
+      background-color: beige;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      transition: all 0.5s ease-out;
+      color: black;
+    }
+
+    .arrow {
+      max-width: 100px;
+      /* ⭐讓圖片不會超出視窗 */
+      max-height: 100px;
+      /* ⭐讓圖片不會超出視窗 */
+      transform-style: preserve-3d;
+      /* ⭐保持3D空間感 */
+      transition: transform 0.1s linear;
+      /* ⭐讓旋轉滑順 */
+      z-index: 3;
+    }
+  </style>
 </head>
 
 <body>

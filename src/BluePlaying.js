@@ -1,5 +1,4 @@
 const arrow = document.querySelector('.arrow');
-const numberDisplay = document.getElementById('number');
 
 let lastBulu = null;
 let direction = "stop";
@@ -14,7 +13,6 @@ window.addEventListener('deviceorientation', function(event) {
     bulu = 110;
   }
 
-  numberDisplay.textContent = bulu;
   arrow.style.transform = `rotateX(${bulu}deg)`;
 
   // ➤ 判斷變化趨勢
