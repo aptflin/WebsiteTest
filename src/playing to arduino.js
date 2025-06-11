@@ -14,11 +14,13 @@ window.addEventListener('deviceorientation', function(event) {
     bulu = 110;
   }
 
-  numberDisplay.textContent = bulu;
+  numberDisplay.textContent = motorAngle;
   arrow.style.transform = `rotateX(${bulu}deg)`;
 
-  // ➤ 判斷變化趨勢
+  const motorAngle = ((110 - bulu) / 110) * 180;
 
+  // ➤ 判斷變化趨勢
+  /*
   const diff = bulu - lastBulu;
 
     if (diff > 1) {
@@ -37,7 +39,7 @@ window.addEventListener('deviceorientation', function(event) {
         console.log("stop");  // Arduino 會收到這行
         fetch('/motor/stop');
         direction = "stop";
-    }
+    }*/
 
 
   // ➤ 修正螢幕翻轉的部分
