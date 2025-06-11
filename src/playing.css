@@ -30,7 +30,7 @@ html {
 .left-light {
   position: absolute;
   top: -80px;
-  left: -90px;
+  left: -40px;
   width: 400px;
   /* 可以微調 */
   opacity: 0.9;
@@ -41,8 +41,8 @@ html {
 /* 左上角角色地圖 */
 .character {
   position: absolute;
-  top: 20px;
-  left: 30px;
+  top: 40px;
+  left: 80px;
   width: 180px;
   /* 可以微調大小 */
 }
@@ -73,8 +73,7 @@ html {
 .arrow {
   position: absolute;
   top: 180px;
-  left: 50%;
-  transform: translateX(-50%);
+  left:42.5%;
   width: 120px;
   height: auto;
   transform-style: preserve-3d;
@@ -127,7 +126,8 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* 不影響點擊行為 */
+  pointer-events: none;
+  /* 不影響點擊行為 */
   z-index: 3;
 }
 
@@ -167,3 +167,31 @@ html {
   opacity: 1;
 }
 
+@viewport {
+  orientation: portrait;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: beige;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: all 0.5s ease-out;
+  color: black;
+}
+
+.arrow {
+  max-width: 100px;
+  /* ⭐讓圖片不會超出視窗 */
+  max-height: 100px;
+  /* ⭐讓圖片不會超出視窗 */
+  transform-style: preserve-3d;
+  /* ⭐保持3D空間感 */
+  transition: transform 0.1s linear;
+  /* ⭐讓旋轉滑順 */
+  z-index: 3;
+}

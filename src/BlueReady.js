@@ -67,6 +67,10 @@ onSnapshot(gameRef, (docSnap) => {
             circle.classList.add(isReady ? 'on' : 'off');
         });
     });
+
+    if (players.Red && players.Blue && players.Green) {
+        window.location.href = 'BluePlaying.html';
+    }
 });
 
 
