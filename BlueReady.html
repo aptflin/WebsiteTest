@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blue_Player_Waiting_Room</title>
+
+  <!--字體連接-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800;900&display=swap" rel="stylesheet">
+
+  <!--外部CSS -->
+  <link rel="stylesheet" href="src/palyer_rgb_style.css">
+
+  <!--接後端準備狀態的JavaScript -->
+  <script type="module" src="src/BlueReady.js"></script>
+
+  <!-- 內部 CSS -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2 class="waiting-text">Waiting For Players...(1)</h2>
+
+    <div class="players">
+      <div class="player-b">
+        <div class="circle blue off"></div>
+        <div class="label you">YOU</div>
+      </div>
+      <div class="player-r">
+        <div class="circle red off"></div>
+        <div class="label">PLAYER<br>1</div>
+      </div>
+      <div class="player-g">
+        <div class="circle green off"></div>
+        <div class="label">PLAYER<br>2</div>
+      </div>
+    </div>
+
+    <button id="readyButton" class="ready-button">READY</button>
+  </div>
+</body>
+
+</html>
