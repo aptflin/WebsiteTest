@@ -83,7 +83,7 @@ onSnapshot(gameRef, async (docSnap) => {
 
         // ⏱ 稍微等一下再跳轉，避免 race condition
         setTimeout(() => {
-            window.location.href = 'BluePlaying.html';
+            window.location.href = 'GreenPlaying.html';
         }, 300); 
     }
 });
