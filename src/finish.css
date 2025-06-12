@@ -1,0 +1,189 @@
+/* 背景 */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top right, #dff6e6, #ccf3f9);
+    font-family: "M PLUS 1p", sans-serif;
+    font-size: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    background-image: url('../images/BG.png');
+    /* 背景圖片 */
+    background-size: cover;
+    /* 背景圖片鋪滿 */
+    background-repeat: no-repeat;
+    /* 不要重複 */
+    background-position: center center;
+    /* 置中顯示 */
+}
+
+/* 整體容器 */
+.container {
+    width: 844px;
+    height: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+/* 標題 Great Job! */
+.title {
+    font-size: 36px;
+    font-weight: 900;
+    color: #47A99C;
+    margin-top: 50px;
+    margin-bottom: 5px;
+}
+
+/* 副標題 */
+.subtitle {
+    font-size: 15px;
+    font-weight: 700;
+    color: #47A99C;
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
+
+/* 中間六邊形區域，改用圖片 */
+.hexagon {
+    top: 15px;
+    position: relative;
+    width: 160px;
+    height: 160px;
+    background-image: url('hexagon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 三顆球 */
+.circle {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    /* 一開始也要有 */
+}
+
+/* 新增內層球 */
+.circle-inner {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 50%;
+    animation: popIn 0.8s ease forwards;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+        border-radius: 50%;
+    }
+
+
+    60% {
+        transform: scale(1.2);
+        opacity: 1;
+        border-radius: 50%;
+    }
+
+    100% {
+        transform: scale(1);
+        border-radius: 50%;
+    }
+}
+
+
+/* 紅球 */
+.red {
+    top: 5px;
+    transform: translateY(-45%);
+
+}
+
+.red .circle-inner {
+    animation-delay: 0s;
+    box-shadow: 0 0 10px #ff7e7e;
+    box-shadow: 0 0 20px #ff7e7e;
+    box-shadow: 0 0 30px #ff7e7e;
+}
+
+/* 藍球 */
+.blue {
+    bottom: 10px;
+    transform: translateX(-65px);
+    animation-delay: 0.2s;
+}
+
+.blue .circle-inner {
+    animation-delay: 0.2s;
+    box-shadow: 0 0 10px #8BCBFF;
+    box-shadow: 0 0 20px #8BCBFF;
+    box-shadow: 0 0 30px #8BCBFF;
+}
+
+/* 綠球 */
+.green {
+    bottom: 10px;
+    transform: translateX(65px);
+    animation-delay: 0.4s;
+}
+
+.green .circle-inner {
+    animation-delay: 0.4s;
+    box-shadow: 0 0 10px #AAFF71;
+    box-shadow: 0 0 20px #AAFF71;
+    box-shadow: 0 0 30px #AAFF71;
+}
+
+/* 箭頭按鈕 */
+.arrow {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 150px;
+    height: 80px;
+    background-image: url('arrow.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 20px;
+    cursor: pointer;
+}
+
+/* 只有hover的時候才發光，而且順著透明邊緣 */
+.arrow:hover {
+    filter: drop-shadow(0 0 10px #ffd5005e);
+    transition: all 0.3s ease;
+}
+
+/* 文字動畫 */
+.arrow-text {
+    color: #D9AD0F;
+    font-weight: 900;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+.arrow:hover .arrow-text {
+    transform: scale(1.2);
+}
