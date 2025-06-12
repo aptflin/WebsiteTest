@@ -13,8 +13,7 @@ html {
   overflow: hidden;
 
   background: radial-gradient(circle at 40% 40%, #fefadc, #e3ffef, #c9fff7);
-  background-size: cover;
-  background-repeat: no-repeat;
+ 
   background-position: center center;
 }
 
@@ -73,7 +72,8 @@ html {
 .arrow {
   position: absolute;
   top: 180px;
-  left:42.5%;
+  left: 50%;
+  transform: translateX(-50%);
   width: 120px;
   height: auto;
   transform-style: preserve-3d;
@@ -95,19 +95,169 @@ html {
   /* 比 goal 更低 */
 }
 
+
+
+
+
+.curve-container {
+   position: absolute;
+  top: 50px;
+  right: 150px;
+  width: 180px;
+  z-index: 999;
+}
+
+svg.curve {
+  position: absolute;
+  top: 140px;
+  left: 10px;
+}
+
+.ball {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 5px solid white;
+  box-shadow: 0 0 10px rgba(111, 111, 111, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.ball.flash {
+  box-shadow: 0 0 20px 10px white;
+  transform: scale(1.2);
+}
+
+.label {
+  position: absolute;
+  top: 55px;      /* 往上移 */
+  right: 0px;    /* 靠右一點 */
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 1px 1px 1px rgb(168, 168, 168);
+}
+
+.w {
+  background: #f9f9f9;
+  top: 195px;
+  left: 40px;
+}
+
+.y {
+  background: #fffb88;
+  top: 145px;
+  left: 95px;
+}
+
+.m {
+  background: #ff99dd;
+  top: 110px;
+  left: 160px;
+}
+
+.c {
+  background: #99f6ff;
+  top: 90px;
+  left: 230px;
+}
+
+.w .label {
+  color: rgb(255, 255, 255);
+  
+  text-shadow: 1px 1px 1px rgb(168, 168, 168);
+}
+
+.y .label {
+  color: gold;
+  text-shadow: 1px 1px 1px rgb(168, 168, 168);
+}
+
+.m .label {
+  color: deeppink;
+  text-shadow: 1px 1px 1px rgb(168, 168, 168);
+}
+
+.c .label {
+  color: darkcyan;
+  text-shadow: 1px 1px 1px rgb(168, 168, 168);
+}
+
+
+
+
+/* ✨ 初始：每顆球都會慢慢閃爍 */
+.ball {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 5px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+  transition: all 0.3s ease;
+}
+
+/* 🌟 點擊後閃一下動畫（一次性） */
+.ball.flash-once {
+  animation: flash-once 0.3s ease;
+}
+
+/* ✅ 點擊後進入穩定發光狀態（停止閃爍） */
+.ball.collected {
+  animation: none;
+  box-shadow: 0 0 20px 8px white;
+}
+
+/* 🔁 閃爍動畫 */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+/* 💥 閃一下動畫 */
+@keyframes flash-once {
+  0% {
+    box-shadow: 0 0 0px white;
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px white;
+    transform: scale(1.2);
+  }
+  100% {
+    box-shadow: 0 0 0px white;
+    transform: scale(1);
+  }
+}
+
 /* 右下角 goal 關卡路徑 */
 .goal {
   position: absolute;
   bottom: -110px;
   right: -70px;
   width: 400px;
+  z-index: -5; /* 在最底層 */
+  pointer-events: none; /* 不干擾點擊 */
 }
 
 /* 左下 GOAL! 文字 */
 .goal-text {
   position: absolute;
-  bottom: 5px;
-  right: 30px;
+  bottom: 40px;
+  right: 50px;
   color: white;
   font-weight: 900;
   font-size: 28px;
@@ -165,33 +315,4 @@ html {
   background-color: cyan;
   box-shadow: 0 0 20px cyan;
   opacity: 1;
-}
-
-@viewport {
-  orientation: portrait;
-}
-
-html,
-body {
-  width: 100vw;
-  height: 100vh;
-  background-color: beige;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  transition: all 0.5s ease-out;
-  color: black;
-}
-
-.arrow {
-  max-width: 100px;
-  /* ⭐讓圖片不會超出視窗 */
-  max-height: 100px;
-  /* ⭐讓圖片不會超出視窗 */
-  transform-style: preserve-3d;
-  /* ⭐保持3D空間感 */
-  transition: transform 0.1s linear;
-  /* ⭐讓旋轉滑順 */
-  z-index: 3;
 }
