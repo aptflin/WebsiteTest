@@ -13,7 +13,7 @@ html {
     align-items: center;
     overflow: hidden;
 
-    background-image: url('../images/BG.png');
+    background-image: url('../src/BG.png');
     /* 背景圖片 */
     background-size: cover;
     /* 背景圖片鋪滿 */
