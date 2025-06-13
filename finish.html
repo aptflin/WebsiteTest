@@ -46,7 +46,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const gameRef = doc(db, "game", "session1");
+    const gameRef = doc(db, "game", "s1");
 
     const urlParams = new URLSearchParams(window.location.search);
     const player = urlParams.get("player");
@@ -61,6 +61,7 @@
 
     // ⏩ 等使用者按下 NEXT 箭頭才判斷
     document.querySelector(".arrow").addEventListener("click", () => {
+        console.log('hiiiiiiii')
         onSnapshot(gameRef, (docSnap) => {
             const owner = docSnap.data().resultOwner;
             if (owner) {
