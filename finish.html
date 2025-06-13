@@ -14,16 +14,50 @@
         <p class="subtitle">太棒了！接下來聽聽看你們合作的成果。</p>
 
         <div class="hexagon">
-            <div class="circle red"><div class="circle-inner"></div></div>
-            <div class="circle blue"><div class="circle-inner"></div></div>
-            <div class="circle green"><div class="circle-inner"></div></div>
-          </div>
-          
+            <div class="circle red">
+                <div class="circle-inner"></div>
+            </div>
+            <div class="circle blue">
+                <div class="circle-inner"></div>
+            </div>
+            <div class="circle green">
+                <div class="circle-inner"></div>
+            </div>
+        </div>
+
         <!-- 箭頭按鈕 -->
         <div class="arrow">
             <span class="arrow-text">NEXT</span>
         </div>
     </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const player = urlParams.get("player");
+
+        const gameRef = doc(db, "game", "session1");
+
+        // 只讓 Red 決定誰顯示結果（你也可以選擇第一個進來的）
+        if (player === "Red") {
+            setTimeout(async () => {
+                const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
+                await updateDoc(gameRef, { resultOwner: picked });
+            }, 3000);
+        }
+
+        // 每個人都監聽誰是被選中的人
+        onSnapshot(gameRef, (docSnap) => {
+            const owner = docSnap.data().resultOwner;
+            if (owner) {
+                if (owner === player) {
+                    window.location.href = "result.html";
+                } else {
+                    window.location.href = "wait_for_others.html";
+                }
+            }
+        });
+
+    </script>
 </body>
 
 </html>

@@ -75,11 +75,11 @@ onSnapshot(gameRef, async (docSnap) => {
         alreadyRedirected = true;
 
         // 🔁 先重置 Firestore 狀態
-        await updateDoc(gameRef, {
+        /*await updateDoc(gameRef, {
             "players.Red": false,
             "players.Blue": false,
             "players.Green": false
-        });
+        });*/
 
         // ⏱ 稍微等一下再跳轉，避免 race condition
         setTimeout(() => {
