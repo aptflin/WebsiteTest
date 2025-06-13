@@ -46,7 +46,7 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const gameRef = doc(db, "game", "s1");
+        const gameRef = doc(db, "game", "session1");
 
         const urlParams = new URLSearchParams(window.location.search);
         const player = urlParams.get("player");
@@ -57,11 +57,12 @@
             const data = docSnap.data();
             const owner = data.resultOwner;
 
+            const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
+            await updateDoc(gameRef, { resultOwner: picked });
             // 🟢 如果還沒決定 resultOwner，這個人就來決定
-            if (!owner) {
-                const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
-                await updateDoc(gameRef, { resultOwner: picked });
-            }
+            /*if (!owner) {
+                
+            }*/
 
             // 🔵 每個人都監聽誰是被選中的
             onSnapshot(gameRef, (snap) => {
