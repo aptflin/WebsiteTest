@@ -57,12 +57,12 @@
             const data = docSnap.data();
             const owner = data.resultOwner;
 
-            const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
-            await updateDoc(gameRef, { resultOwner: picked });
+
             // 🟢 如果還沒決定 resultOwner，這個人就來決定
-            /*if (!owner) {
-                
-            }*/
+            if (!owner || owner === "" || owner === null) {
+                const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
+                await updateDoc(gameRef, { resultOwner: picked });
+            }
 
             // 🔵 每個人都監聽誰是被選中的
             onSnapshot(gameRef, (snap) => {
