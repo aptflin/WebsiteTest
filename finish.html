@@ -2,81 +2,87 @@
 <html lang="zh-TW">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=844, height=390, initial-scale=1.0">
-    <title>Great Job</title>
-    <link rel="stylesheet" href="src/finish.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=844, height=390, initial-scale=1.0">
+  <title>Great Job</title>
+  <link rel="stylesheet" href="src/finish.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="title">Great Job!</h1>
-        <p class="subtitle">太棒了！接下來聽聽看你們合作的成果。</p>
+  <div class="container">
+    <h1 class="title">Great Job!</h1>
+    <p class="subtitle">太棒了！接下來聽聽看你們合作的成果。</p>
 
-        <div class="hexagon">
-            <div class="circle red">
-                <div class="circle-inner"></div>
-            </div>
-            <div class="circle blue">
-                <div class="circle-inner"></div>
-            </div>
-            <div class="circle green">
-                <div class="circle-inner"></div>
-            </div>
-        </div>
-
-        <!-- 箭頭按鈕 -->
-        <div class="arrow">
-            <span class="arrow-text">NEXT</span>
-        </div>
+    <div class="hexagon">
+      <div class="circle red">
+        <div class="circle-inner"></div>
+      </div>
+      <div class="circle blue">
+        <div class="circle-inner"></div>
+      </div>
+      <div class="circle green">
+        <div class="circle-inner"></div>
+      </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, doc, onSnapshot, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- 箭頭按鈕 -->
+    <div class="arrow">
+      <span class="arrow-text">NEXT</span>
+    </div>
+  </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCJCxy6B9-Gt3RnxJbiYi2w_uIRd-yfSFM",
-            authDomain: "bondjumaybeisthelast.firebaseapp.com",
-            projectId: "bondjumaybeisthelast",
-            storageBucket: "bondjumaybeisthelast.appspot.com",
-            messagingSenderId: "573258856356",
-            appId: "1:573258856356:web:503844c0fe7bee65aa7331"
-        };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, onSnapshot, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const gameRef = doc(db, "game", "session1");
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJCxy6B9-Gt3RnxJbiYi2w_uIRd-yfSFM",
+      authDomain: "bondjumaybeisthelast.firebaseapp.com",
+      projectId: "bondjumaybeisthelast",
+      storageBucket: "bondjumaybeisthelast.appspot.com",
+      messagingSenderId: "573258856356",
+      appId: "1:573258856356:web:503844c0fe7bee65aa7331"
+    };
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const player = urlParams.get("player");
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const gameRef = doc(db, "game", "s1");
 
-        // 當按下箭頭才執行邏輯
-        document.querySelector(".arrow").addEventListener("click", async () => {
-            const docSnap = await getDoc(gameRef);
-            const data = docSnap.data();
-            const owner = data.resultOwner;
+    const urlParams = new URLSearchParams(window.location.search);
+    const player = urlParams.get("player");
+
+    // 當按下箭頭才執行邏輯
+    document.querySelector(".arrow").addEventListener("click", async () => {
+      const docSnap = await getDoc(gameRef);
+      const data = docSnap.data();
+      const owner = data.resultOwner;
 
 
-            // 🟢 如果還沒決定 resultOwner，這個人就來決定
-            if (!owner || owner === "" || owner === null) {
-                const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
-                await updateDoc(gameRef, { resultOwner: picked });
-            }
+      // 🟢 如果還沒決定 resultOwner，這個人就來決定
 
-            // 🔵 每個人都監聽誰是被選中的
-            onSnapshot(gameRef, (snap) => {
-                const finalOwner = snap.data().resultOwner;
-                if (finalOwner) {
-                    if (finalOwner === player) {
-                        window.location.href = "result.html";
-                    } else {
-                        window.location.href = "wait_for_others.html";
-                    }
-                }
-            });
-        });
-    </script>
+
+      try {
+        if (!owner) {
+          const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
+          await updateDoc(gameRef, { resultOwner: picked });
+        }
+      } catch (err) {
+        console.error("更新 Firebase 錯誤", err);
+      }
+
+      // 🔵 每個人都監聽誰是被選中的
+      onSnapshot(gameRef, (snap) => {
+        const finalOwner = snap.data().resultOwner;
+        if (finalOwner) {
+          if (finalOwner === picked) {
+            window.location.href = "result.html";
+          } else {
+            window.location.href = "wait_for_others.html";
+          }
+        }
+      });
+    });
+  </script>
 
 
 </body>
