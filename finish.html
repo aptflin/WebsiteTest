@@ -53,14 +53,7 @@
 
         // 🎯 1. 所有人一進來就監聽 Firebase 的結果
         onSnapshot(gameRef, (snap) => {
-            const finalOwner = snap.data().resultOwner;
-            if (finalOwner) {
-                if (finalOwner === player) {
-                    window.location.href = "result.html";
-                } else {
-                    window.location.href = "wait_for_others.html";
-                }
-            }
+            
         });
 
         // 🎯 2. 點擊箭頭後才嘗試寫入 resultOwner
@@ -77,6 +70,15 @@
                 }
             } catch (err) {
                 console.error("更新 Firebase 錯誤", err);
+            }
+
+            const finalOwner = snap.data().resultOwner;
+            if (finalOwner) {
+                if (finalOwner === player) {
+                    window.location.href = "result.html";
+                } else {
+                    window.location.href = "wait_for_others.html";
+                }
             }
         });
     </script>
