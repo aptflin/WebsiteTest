@@ -49,6 +49,25 @@
 
     <button id="readyButton" class="ready-button">READY</button>
   </div>
+      <div class="sound-panel">
+      <div class="icon">🔊</div>
+      <button class="sound-btn" onclick="playSound('src/Whip.mp3')">
+        <img src="src/whip.png" alt="鞭子">
+      </button>
+      <button class="sound-btn" onclick="playSound('src/fart.mp3')">
+        <img src="src/fart.png" alt="放屁">
+      </button>
+      <button class="sound-btn" onclick="playSound('src/shock.mp3')">
+        <img src="src/shock.png" alt="woo">
+      </button>
+  </div>
+  </div>
+  <script>
+    function playSound(file) {
+      const audio = new Audio(file);
+      audio.play();
+    }
+  </script>
 </body>
 
 </html>
