@@ -51,37 +51,46 @@
         const urlParams = new URLSearchParams(window.location.search);
         const player = urlParams.get("player");
 
-        // 🎯 1. 所有人一進來就監聽 Firebase 的結果
+        let resultOwner = null; // 記錄 Firebase 中選中的人
+
+        // 🎯 所有人一進來就監聽 resultOwner（但不跳轉）
         onSnapshot(gameRef, (snap) => {
-            
+            resultOwner = snap.data().resultOwner;
+            console.log("目前選中的人：", resultOwner);
         });
 
-        // 🎯 2. 點擊箭頭後才嘗試寫入 resultOwner
+        // 🎯 點擊箭頭後再決定跳轉邏輯
         document.querySelector(".arrow").addEventListener("click", async () => {
             try {
                 const docSnap = await getDoc(gameRef);
-                const owner = docSnap.data().resultOwner;
+                const current = docSnap.data().resultOwner;
 
                 // 如果還沒有人被選中，這個人來決定
-                if (!owner) {
+                if (!current) {
                     const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
                     await updateDoc(gameRef, { resultOwner: picked });
-                    console.log("隨機選擇:", picked);
+                    console.log("你是第一個點，已決定為：", picked);
                 }
-            } catch (err) {
-                console.error("更新 Firebase 錯誤", err);
-            }
 
-            const finalOwner = snap.data().resultOwner;
-            if (finalOwner) {
-                if (finalOwner === player) {
-                    window.location.href = "result.html";
-                } else {
-                    window.location.href = "wait_for_others.html";
-                }
+                // 等 resultOwner 寫入後再決定是否跳轉
+                const unsubscribe = onSnapshot(gameRef, (snap) => {
+                    const finalOwner = snap.data().resultOwner;
+                    if (finalOwner) {
+                        if (finalOwner === player) {
+                            window.location.href = "result.html";
+                        } else {
+                            window.location.href = "wait_for_others.html";
+                        }
+                        unsubscribe(); // ✅ 停止監聽，避免重複觸發
+                    }
+                });
+
+            } catch (err) {
+                console.error("處理錯誤：", err);
             }
         });
     </script>
+
 
 
 
