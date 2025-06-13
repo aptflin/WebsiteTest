@@ -31,21 +31,36 @@
         </div>
     </div>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const player = urlParams.get("player");
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const gameRef = doc(db, "game", "session1");
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJCxy6B9-Gt3RnxJbiYi2w_uIRd-yfSFM",
+      authDomain: "bondjumaybeisthelast.firebaseapp.com",
+      projectId: "bondjumaybeisthelast",
+      storageBucket: "bondjumaybeisthelast.appspot.com",
+      messagingSenderId: "573258856356",
+      appId: "1:573258856356:web:503844c0fe7bee65aa7331"
+    };
 
-        // 只讓 Red 決定誰顯示結果（你也可以選擇第一個進來的）
-        if (player === "Red") {
-            setTimeout(async () => {
-                const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
-                await updateDoc(gameRef, { resultOwner: picked });
-            }, 3000);
-        }
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const gameRef = doc(db, "game", "session1");
 
-        // 每個人都監聽誰是被選中的人
+    const urlParams = new URLSearchParams(window.location.search);
+    const player = urlParams.get("player");
+
+    // 只讓 Red 決定誰顯示結果（可以換成你要的邏輯）
+    if (player === "Red") {
+        setTimeout(async () => {
+            const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
+            await updateDoc(gameRef, { resultOwner: picked });
+        }, 100);
+    }
+
+    // ⏩ 等使用者按下 NEXT 箭頭才判斷
+    document.querySelector(".arrow").addEventListener("click", () => {
         onSnapshot(gameRef, (docSnap) => {
             const owner = docSnap.data().resultOwner;
             if (owner) {
@@ -56,8 +71,9 @@
                 }
             }
         });
+    });
+</script>
 
-    </script>
 </body>
 
 </html>
