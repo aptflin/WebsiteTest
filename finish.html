@@ -32,48 +32,51 @@
     </div>
 
     <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCJCxy6B9-Gt3RnxJbiYi2w_uIRd-yfSFM",
-      authDomain: "bondjumaybeisthelast.firebaseapp.com",
-      projectId: "bondjumaybeisthelast",
-      storageBucket: "bondjumaybeisthelast.appspot.com",
-      messagingSenderId: "573258856356",
-      appId: "1:573258856356:web:503844c0fe7bee65aa7331"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyCJCxy6B9-Gt3RnxJbiYi2w_uIRd-yfSFM",
+            authDomain: "bondjumaybeisthelast.firebaseapp.com",
+            projectId: "bondjumaybeisthelast",
+            storageBucket: "bondjumaybeisthelast.appspot.com",
+            messagingSenderId: "573258856356",
+            appId: "1:573258856356:web:503844c0fe7bee65aa7331"
+        };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const gameRef = doc(db, "game", "s1");
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const gameRef = doc(db, "game", "s1");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const player = urlParams.get("player");
+        const urlParams = new URLSearchParams(window.location.search);
+        const player = urlParams.get("player");
 
-    // 只讓 Red 決定誰顯示結果（可以換成你要的邏輯）
-    if (player === "Red") {
-        setTimeout(async () => {
-            const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
-            await updateDoc(gameRef, { resultOwner: picked });
-        }, 100);
-    }
+        // 當按下箭頭才執行邏輯
+        document.querySelector(".arrow").addEventListener("click", async () => {
+            const docSnap = await getDoc(gameRef);
+            const data = docSnap.data();
+            const owner = data.resultOwner;
 
-    // ⏩ 等使用者按下 NEXT 箭頭才判斷
-    document.querySelector(".arrow").addEventListener("click", () => {
-        console.log('hiiiiiiii')
-        onSnapshot(gameRef, (docSnap) => {
-            const owner = docSnap.data().resultOwner;
-            if (owner) {
-                if (owner === player) {
-                    window.location.href = "result.html";
-                } else {
-                    window.location.href = "wait_for_others.html";
-                }
+            // 🟢 如果還沒決定 resultOwner，這個人就來決定
+            if (!owner) {
+                const picked = ["Red", "Green", "Blue"][Math.floor(Math.random() * 3)];
+                await updateDoc(gameRef, { resultOwner: picked });
             }
+
+            // 🔵 每個人都監聽誰是被選中的
+            onSnapshot(gameRef, (snap) => {
+                const finalOwner = snap.data().resultOwner;
+                if (finalOwner) {
+                    if (finalOwner === player) {
+                        window.location.href = "result.html";
+                    } else {
+                        window.location.href = "wait_for_others.html";
+                    }
+                }
+            });
         });
-    });
-</script>
+    </script>
+
 
 </body>
 
