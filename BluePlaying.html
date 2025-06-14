@@ -24,9 +24,10 @@
 
     <!-- 中央 Round 標題 -->
     <div class="round-info">
-      <h2 class="round-title">ROUND</h2>
-      <h1 class="round-number">1</h1>
-      <h1 id="number">1</h1>
+      <h2 class="round-title">點箭頭開始</h2>
+      
+      <!--<h1 class="round-number">1</h1>-->
+      <h1 class="round-number"id="number">馬達角度：</h1>
     </div>
 
     <!-- 中央箭頭提示 -->
@@ -35,16 +36,16 @@
     <div class="curve-container">
       <!-- 色球 -->
       <div class="ball w" onclick="flash(this)">
-        <div class="label">W</div>
+        <div class="label"></div>
       </div>
       <div class="ball y" onclick="flash(this)">
-        <div class="label">Y</div>
+        <div class="label"></div>
       </div>
       <div class="ball m" onclick="flash(this)">
-        <div class="label">M</div>
+        <div class="label"></div>
       </div>
       <div class="ball c" onclick="flash(this)">
-        <div class="label">C</div>
+        <div class="label"></div>
       </div>
     </div>
   </div>
@@ -58,7 +59,47 @@
 
   </div>
 
-  <!--阿許做的超漂漂動畫-->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJCxy6B9-Gt3RnxJbiYi2w_uIRd-yfSFM",
+      authDomain: "bondjumaybeisthelast.firebaseapp.com",
+      projectId: "bondjumaybeisthelast",
+      storageBucket: "bondjumaybeisthelast.appspot.com",
+      messagingSenderId: "573258856356",
+      appId: "1:573258856356:web:503844c0fe7bee65aa7331"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const redRef = doc(db, "music_sequence", "red");
+
+    let noteSequence = [];
+
+    // 初始化讀取資料
+    async function initSequence() {
+      const snap = await getDoc(redRef);
+      if (snap.exists()) {
+        noteSequence = snap.data().sequence || [];
+        console.log("已從 Firebase 初始化 noteSequence：", noteSequence);
+      }
+    }
+    initSequence();
+
+    // 上傳音符
+    window.uploadNote = async function (note) {
+      if (noteSequence.length >= 8) {
+        noteSequence.shift(); // 移除第一個
+      }
+      noteSequence.push(note); // 加入新音符
+      await setDoc(redRef, { sequence: noteSequence });
+      console.log("上傳：", noteSequence);
+    }
+  </script>
+
+  <!--啊踢-->
   <script>
     let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
     ws.addEventListener('message', (message) => {
@@ -71,24 +112,28 @@
         let valC = data['colorC'];
         if (valC == 1) {
           flash(document.querySelector('.ball.c'))
+          uploadNote('C')
         }
       }
       if ('colorM' in data) {
         let valM = data['colorM'];
         if (valM == 1) {
           flash(document.querySelector('.ball.m'))
+          uploadNote('M')
         }
       }
       if ('colorY' in data) {
         let valY = data['colorY'];
         if (valY == 1) {
           flash(document.querySelector('.ball.y'))
+          uploadNote('Y')
         }
       }
       if ('colorW' in data) {
         let valW = data['colorW'];
         if (valW == 1) {
           flash(document.querySelector('.ball.w'))
+          uploadNote('W')
         }
       }
     })
@@ -118,14 +163,15 @@
         });
 
         if (allCollected) {
-          window.location.href = "finish.html?player=Blue"; // 根據不同人改變 Red/Blue/Green // ✅ 跳轉
+          window.location.href = "finish.html?player=Red"; // 根據不同人改變 Red/Blue/Green // ✅ 跳轉
         }
       }, 300);
     }
 
   </script>
 
-  <script type="module" src="src/BluePlayingTOROandFIRE.js"></script>
+  <script type="module" src="src/RedPlayingTOROandFIRE.js"></script>
+
 
 </body>
 

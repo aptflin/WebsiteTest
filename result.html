@@ -28,6 +28,7 @@
             max-width: 800px;
             text-align: center;
             position: relative;
+            height: 50vw;
         }
 
         .title {
@@ -37,6 +38,7 @@
             margin-bottom: 40px;
             font-family: "M PLUS 1p", sans-serif;
             font-weight: 900;
+            margin: 0vw;
         }
 
         .staff-area {
@@ -80,78 +82,85 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            padding-left: 35vw;
-            /* 往右留空間 */
+            padding-left: 30px;
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            padding-left: 30px;
         }
 
         .note {
             width: 25px;
             height: 25px;
             border-radius: 50%;
-
+            transition: all 0.2s ease;
         }
 
-        .controls {
-            margin-top: 20px;
+        .glow {
+            box-shadow: 0 0 20px 5px rgba(255, 255, 255, 0.8);
+            transform: scale(1.5);
         }
 
-        .sound-btn {
-            margin: 5px;
+        .glow-cyan {
+            box-shadow: 0 0 20px 5px rgba(161, 255, 255, 0.8);
+            transform: scale(1.5);
+        }
+
+        .glow-magenta {
+            box-shadow: 0 0 20px 5px rgba(255, 165, 252, 0.8);
+            transform: scale(1.5);
+        }
+
+        .glow-yellow {
+            box-shadow: 0 0 20px 5px rgba(255, 250, 151, 0.8);
+            transform: scale(1.5);
+        }
+
+        .glow-white {
+            box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.9);
+            transform: scale(1.5);
+        }
+
+        #startPlayback {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
             padding: 10px 20px;
-            font-size: 18px;
-            border-radius: 8px;
-            border: none;
-            background-color: #2d9999;
+            font-size: 16px;
+            background-color: #2b7d7d;
             color: white;
-            font-weight: bold;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
+            font-family: "M PLUS 1p", sans-serif;
+            font-weight: 900;
         }
 
-        .sound-btn:hover {
-            background-color: #226a6a;
+        #startPlayback:hover {
+            background-color: #3c9f9f;
         }
     </style>
-
 </head>
 
 <body>
-
     <div class="container">
         <div class="title">Now Listen...</div>
 
-
         <div class="staff-area">
             <div class="staff-lines">
-
                 <div class="staff-line"></div>
                 <div class="staff-line"></div>
                 <div class="staff-line"></div>
                 <div class="staff-line"></div>
                 <div class="staff-line"></div>
             </div>
-            <!-- 高音譜號圖片（建議透明背景 PNG） -->
             <img src="src/clef.png" alt="Treble Clef" class="clef" />
             <div class="note-layer" id="noteLayer"></div>
+            <button id="startPlayback">開始播放</button>
         </div>
-
-        <div class="controls">
-            <button class="sound-btn" onclick="addNote('C')">C</button>
-            <button class="sound-btn" onclick="addNote('M')">M</button>
-            <button class="sound-btn" onclick="addNote('Y')">Y</button>
-            <button class="sound-btn" onclick="addNote('W')">W</button>
-            <button class="sound-btn" onclick="playSequence()">▶ 播放</button>
-            <button class="sound-btn" onclick="stopSequence()">■ 停止</button>
-        </div>
-        <audio preload="auto">
-
     </div>
 
-    <script>
-
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
@@ -168,108 +177,66 @@
         const db = getFirestore(app);
         const redRef = doc(db, "music_sequence", "red");
 
-        let noteLayer = document.getElementById('noteLayer');;
-        let noteCount = 0;
-        const maxNotes = 8;
-        const noteSequence = []; // 用來儲存播放順序
-        let playInterval = null;
-
-        const docSnap = await getDoc(redRef);
-        if (docSnap.exists()) {
-            const sequence = docSnap.data().sequence || [];
-            sequence.forEach((note, index) => {
-                setTimeout(() => {
-                    addNote(note);  // 這個函式你已經有定義
-                }, index * 100);
-            });
-        }
+        const noteLayer = document.getElementById('noteLayer');
+        const noteSequence = [];
 
         const noteSettings = {
-            C: { color: '#A1FFFF', top: 99, sound: 'src/C.mp3' },
-            M: { color: '#FFA5FC', top: 75, sound: 'src/M.mp3' },
-            Y: { color: '#FFFA97', top: 50, sound: 'src/Y.mp3' },
-            W: { color: 'white', top: 25, sound: 'src/W.mp3' }
+            C: { color: '#A1FFFF', top: 99, sound: 'src/C.mp3', glowClass: 'glow-cyan' },
+            M: { color: '#FFA5FC', top: 75, sound: 'src/M.mp3', glowClass: 'glow-magenta' },
+            Y: { color: '#FFFA97', top: 50, sound: 'src/Y.mp3', glowClass: 'glow-yellow' },
+            W: { color: 'white', top: 25, sound: 'src/W.mp3', glowClass: 'glow-white' }
         };
 
-        function addNote(note) {
-            if (noteCount >= maxNotes) return;
-
+        function addNote(note, index) {
             const info = noteSettings[note];
-            const audio = new Audio(info.sound);
-            audio.play();
-
             const noteEl = document.createElement('div');
             noteEl.classList.add('note');
             noteEl.style.backgroundColor = info.color;
             noteEl.style.position = "absolute";
             noteEl.style.top = `${info.top}px`;
-            noteEl.style.left = `${noteCount * 10.5 + 13}%`;
-
+            noteEl.style.left = `${index * 10.5 + 13}%`;
             noteLayer.appendChild(noteEl);
 
-            // 儲存音訊與 DOM 參考
-            noteSequence.push({ audio: new Audio(info.sound), element: noteEl });
-
-            // 👉 存進 localStorage
-            let storedNotes = JSON.parse(localStorage.getItem("noteSequence") || "[]");
-            storedNotes.push(note);
-            localStorage.setItem("noteSequence", JSON.stringify(storedNotes));
-
-            noteCount++;
+            noteSequence.push({ note: note, audio: new Audio(info.sound), element: noteEl });
         }
 
 
-        function playSequence() {
-            let index = 0;
-
-            if (noteSequence.length === 0) return;
-
-            // 重置亮起樣式
-            noteSequence.forEach(n => {
-                n.element.style.boxShadow = '';
-                n.element.style.transform = '';
-            });
-
-            playInterval = setInterval(() => {
-                if (index > 0) {
-                    // 移除上個亮光
-                    const prev = noteSequence[index - 1];
-                    prev.element.style.boxShadow = '';
-                    prev.element.style.transform = '';
+        function playNotesInOrder() {
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i > 0) {
+                    const prevNote = noteSequence[i - 1];
+                    prevNote.element.classList.remove(noteSettings[prevNote.note].glowClass);
                 }
-
-                if (index >= noteSequence.length) {
-                    clearInterval(playInterval);
-                    playInterval = null;
+                if (i >= noteSequence.length) {
+                    clearInterval(interval);
                     return;
                 }
-
-                const current = noteSequence[index];
-                current.audio.currentTime = 0;
-                current.audio.play();
-
-                current.element.style.boxShadow = `0 0 30px 6px ${current.element.style.backgroundColor}`;
-                current.element.style.transform = 'scale(1.5)';
-                index++;
-            }, 450); // 每顆音間隔時間（毫秒）
+                const note = noteSequence[i];
+                note.element.classList.add(noteSettings[note.note].glowClass);
+                note.audio.currentTime = 0;
+                note.audio.play();
+                i++;
+            }, 550);
         }
 
-        function stopSequence() {
-            if (playInterval) {
-                clearInterval(playInterval);
-                playInterval = null;
+
+        document.getElementById('startPlayback').addEventListener('click', async () => {
+            const snap = await getDoc(redRef);
+            if (snap.exists()) {
+                const sequence = snap.data().sequence || [];
+
+                // 清空前次音符與動畫
+                noteLayer.innerHTML = '';
+                noteSequence.length = 0;
+
+                sequence.forEach((note, index) => addNote(note, index));
+                playNotesInOrder();
+            } else {
+                console.error("No sequence found in Firebase!");
             }
-
-            noteSequence.forEach(n => {
-                n.element.style.boxShadow = '';
-                n.element.style.transform = '';
-                n.audio.pause();
-                n.audio.currentTime = 0;
-            });
-        }
+        });
     </script>
-
-
 </body>
 
 </html>

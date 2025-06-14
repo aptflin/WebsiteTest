@@ -58,11 +58,18 @@ html {
 .round-title {
   font-size: 24px;
   color: #2d9999;
-  font-weight: 900;
+  font-weight: 700;
   margin: 0;
 }
 
 .round-number {
+  font-size: 20px;
+  color: #2d9999;
+  font-weight: 700;
+  margin: 0;
+}
+
+.number{
   font-size: 48px;
   color: #2d9999;
   font-weight: 900;
@@ -72,8 +79,7 @@ html {
 .arrow {
   position: absolute;
   top: 180px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 42.5%;
   width: 120px;
   height: auto;
   transform-style: preserve-3d;
@@ -311,7 +317,7 @@ svg.curve {
   opacity: 1;
 }
 
-.cyan.active {
+round-title {
   background-color: cyan;
   box-shadow: 0 0 20px cyan;
   opacity: 1;
