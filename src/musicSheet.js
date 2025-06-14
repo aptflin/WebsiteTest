@@ -30,8 +30,14 @@ function addNote(note) {
     // 儲存音訊與 DOM 參考
     noteSequence.push({ audio: new Audio(info.sound), element: noteEl });
 
+    // 👉 存進 localStorage
+    let storedNotes = JSON.parse(localStorage.getItem("noteSequence") || "[]");
+    storedNotes.push(note);
+    localStorage.setItem("noteSequence", JSON.stringify(storedNotes));
+
     noteCount++;
 }
+
 
 function playSequence() {
     let index = 0;

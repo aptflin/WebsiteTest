@@ -92,7 +92,7 @@
             width: 25px;
             height: 25px;
             border-radius: 50%;
-            
+
         }
 
         .controls {
@@ -115,18 +115,18 @@
             background-color: #226a6a;
         }
     </style>
-    
+
 </head>
 
 <body>
-    
+
     <div class="container">
         <div class="title">Now Listen...</div>
-        
+
 
         <div class="staff-area">
             <div class="staff-lines">
-                
+
                 <div class="staff-line"></div>
                 <div class="staff-line"></div>
                 <div class="staff-line"></div>
@@ -146,14 +146,24 @@
             <button class="sound-btn" onclick="playSequence()">▶ 播放</button>
             <button class="sound-btn" onclick="stopSequence()">■ 停止</button>
         </div>
-        <audio preload="auto"> 
+        <audio preload="auto">
 
     </div>
 
     <script src="src/musicSheet.js"></script>
 
+    <script>
+        window.addEventListener("DOMContentLoaded", () => {
+            const saved = JSON.parse(localStorage.getItem("noteSequence") || "[]");
 
-
+            // 一個一個加回去（使用 setTimeout 拉開時間間距）
+            saved.forEach((note, index) => {
+                setTimeout(() => {
+                    addNote(note);
+                }, index * 100); // 每個音延遲一點，避免太快
+            });
+        });
+    </script>
 
 </body>
 
