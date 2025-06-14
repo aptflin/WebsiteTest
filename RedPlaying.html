@@ -58,7 +58,8 @@
 
   </div>
 
-  <!--阿許做的超漂漂動畫-->
+  <script src="src/musicSheet.js"></script>
+  <!--啊踢-->
   <script>
     let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
     ws.addEventListener('message', (message) => {
@@ -71,24 +72,28 @@
         let valC = data['colorC'];
         if (valC == 1) {
           flash(document.querySelector('.ball.c'))
+          addNote('C');
         }
       }
       if ('colorM' in data) {
         let valM = data['colorM'];
         if (valM == 1) {
           flash(document.querySelector('.ball.m'))
+          addNote('M');
         }
       }
       if ('colorY' in data) {
         let valY = data['colorY'];
         if (valY == 1) {
           flash(document.querySelector('.ball.y'))
+          addNote('Y');
         }
       }
       if ('colorW' in data) {
         let valW = data['colorW'];
         if (valW == 1) {
           flash(document.querySelector('.ball.w'))
+          addNote('W');
         }
       }
     })
@@ -124,7 +129,7 @@
     }
 
   </script>
-
+  
   <script type="module" src="src/RedPlayingTOROandFIRE.js"></script>
 
 </body>

@@ -9,19 +9,152 @@
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;700;800;900&display=swap" rel="stylesheet">
 
     <title>Now Listen</title>
-    <link rel="stylesheet" href="src/ending.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            font-family: "M PLUS 1p", sans-serif;
+            font-weight: 900;
+            background: linear-gradient(to bottom right, #f3f9de, #c4f0ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+        }
+
+        .title {
+            font-size: 36px;
+            color: #2b7d7d;
+            font-weight: bold;
+            margin-bottom: 40px;
+            font-family: "M PLUS 1p", sans-serif;
+            font-weight: 900;
+        }
+
+        .staff-area {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            margin: 0 auto 40px;
+        }
+
+        .staff-lines {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            color: #4EA59B;
+        }
+
+        .staff-line {
+            width: 105%;
+            height: 3px;
+            background-color: #2b7d7d;
+        }
+
+        .clef {
+            position: absolute;
+            left: -10px;
+            bottom: 1vw;
+            height: 180px;
+            z-index: 1;
+        }
+
+        .note-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            padding-left: 35vw;
+            /* 往右留空間 */
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding-left: 30px;
+        }
+
+        .note {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            
+        }
+
+        .controls {
+            margin-top: 20px;
+        }
+
+        .sound-btn {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: none;
+            background-color: #2d9999;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .sound-btn:hover {
+            background-color: #226a6a;
+        }
+    </style>
+    
 </head>
 
 <body>
+    
     <div class="container">
-        <div class="title-info">
-            <h1 class="title">Now Listen...</h1>
-        </div>
+        <div class="title">Now Listen...</div>
+        
+
         <div class="staff-area">
-            <img src="src/line.png" class="staff-full" alt="staff lines" />
+            <div class="staff-lines">
+                
+                <div class="staff-line"></div>
+                <div class="staff-line"></div>
+                <div class="staff-line"></div>
+                <div class="staff-line"></div>
+                <div class="staff-line"></div>
+            </div>
+            <!-- 高音譜號圖片（建議透明背景 PNG） -->
+            <img src="src/clef.png" alt="Treble Clef" class="clef" />
+            <div class="note-layer" id="noteLayer"></div>
         </div>
 
+        <div class="controls">
+            <button class="sound-btn" onclick="addNote('C')">C</button>
+            <button class="sound-btn" onclick="addNote('M')">M</button>
+            <button class="sound-btn" onclick="addNote('Y')">Y</button>
+            <button class="sound-btn" onclick="addNote('W')">W</button>
+            <button class="sound-btn" onclick="playSequence()">▶ 播放</button>
+            <button class="sound-btn" onclick="stopSequence()">■ 停止</button>
+        </div>
+        <audio preload="auto"> 
+
     </div>
+
+    <script src="src/musicSheet.js"></script>
+
+
+
+
 </body>
 
 </html>
