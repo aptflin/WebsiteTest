@@ -8,64 +8,70 @@ const firebaseConfig = {
     storageBucket: "bondju-58069.firebasestorage.app",
     messagingSenderId: "773554844066",
     appId: "1:773554844066:web:862be0067cbab41fb342fb"
-  };
+};
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const player = "red"; // 玩家在這邊啦！！！！
 
-//陀螺儀儀儀儀儀儀儀儀儀儀儀
 const arrow = document.querySelector(".arrow");
 const numberDisplay = document.getElementById("number");
 
 let lastSentTime = 0;
 
 function rotating() {
-  window.addEventListener('deviceorientation', async (event) => {
-    let gamma = event.gamma;
-    let bulu = 90 - (-gamma);
+    window.addEventListener('deviceorientation', async (event) => {
+        let gamma = event.gamma;
 
-    if (bulu > 160) bulu = 0;
-    else if (bulu > 110) bulu = 110;
+        let bulu;
+        if (gamma >= 55 && gamma <= 90) {
+            bulu = 0;
+        } else if (gamma >= 0 && gamma < 55) {
+            bulu = 110;
+        } else {
+            bulu = 90 - (-gamma);
+            if (bulu > 160) bulu = 0;
+            else if (bulu > 110) bulu = 110;
+        }
 
-    const motorAngle = Math.round((110 - bulu) / 110 * 180);
-    numberDisplay.textContent = `馬達角度：${motorAngle}`;
-    arrow.style.transform = `rotateX(${bulu}deg)`;
+        const motorAngle = Math.round((110 - bulu) / 110 * 180);
+        numberDisplay.textContent = `馬達角度：${motorAngle}`;
+        arrow.style.transform = `rotateX(${bulu}deg)`;
 
-    // 傳送至 Firebase 每 400ms 一次
-    const now = Date.now();
-    if (now - lastSentTime >= 400) {
-      lastSentTime = now;
-      const docRef = doc(db, "motor_control", player);
-      try {
-        await updateDoc(docRef, { angle: motorAngle });
-        console.log("已傳送 motorAngle:", motorAngle);
-      } catch (err) {
-        console.error("更新 Firebase 錯誤", err);
-      }
-    }
+        // 傳送至 Firebase 每 400ms 一次
+        const now = Date.now();
+        if (now - lastSentTime >= 400) {
+            lastSentTime = now;
+            const docRef = doc(db, "motor_control", player);
+            try {
+                await updateDoc(docRef, { angle: motorAngle });
+                console.log("已傳送 motorAngle:", motorAngle);
+            } catch (err) {
+                console.error("更新 Firebase 錯誤", err);
+            }
+        }
 
-    // 修正手機翻轉視角
-    if (window.orientation === -90) {
-      document.body.style.transform = "rotate(180deg)";
-    } else {
-      document.body.style.transform = "rotate(0deg)";
-    }
-  });
+        // 修正手機翻轉視角
+        if (window.orientation === -90) {
+            document.body.style.transform = "rotate(180deg)";
+        } else {
+            document.body.style.transform = "rotate(0deg)";
+        }
+    });
+
 }
 
-//方向顛倒倒倒倒倒倒倒倒倒倒倒倒倒倒倒倒倒倒倒倒
 arrow.addEventListener("click", () => {
-  if (typeof DeviceOrientationEvent?.requestPermission === "function") {
-    DeviceOrientationEvent.requestPermission().then((permissionState) => {
-      if (permissionState === "granted") {
+    if (typeof DeviceOrientationEvent?.requestPermission === "function") {
+        DeviceOrientationEvent.requestPermission().then((permissionState) => {
+            if (permissionState === "granted") {
+                rotating();
+            } else {
+                alert("請允許存取裝置方向！");
+            }
+        });
+    } else {
+        // Android 或桌機支援
         rotating();
-      } else {
-        alert("請允許存取裝置方向！");
-      }
-    });
-  } else {
-    // Android 或桌機支援
-    rotating();
-  }
+    }
 });
