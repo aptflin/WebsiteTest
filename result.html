@@ -153,17 +153,19 @@
     <script src="src/musicSheet.js"></script>
 
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            const saved = JSON.parse(localStorage.getItem("noteSequence") || "[]");
+    window.addEventListener("DOMContentLoaded", () => {
+        initMusicSheet(); // ⭐ 一定要先初始化
 
-            // 一個一個加回去（使用 setTimeout 拉開時間間距）
-            saved.forEach((note, index) => {
-                setTimeout(() => {
-                    addNote(note);
-                }, index * 100); // 每個音延遲一點，避免太快
-            });
+        const saved = JSON.parse(localStorage.getItem("noteSequence") || "[]");
+
+        saved.forEach((note, index) => {
+            setTimeout(() => {
+                addNote(note);
+            }, index * 100);
         });
-    </script>
+    });
+</script>
+
 
 </body>
 

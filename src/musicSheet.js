@@ -1,4 +1,4 @@
-const noteLayer = document.getElementById('noteLayer');
+let noteLayer = null;
 let noteCount = 0;
 const maxNotes = 8;
 const noteSequence = []; // 用來儲存播放順序
@@ -10,6 +10,11 @@ const noteSettings = {
     Y: { color: '#FFFA97', top: 50, sound: 'src/Y.mp3' },
     W: { color: 'white', top: 25, sound: 'src/W.mp3' }
 };
+
+function initMusicSheet() {
+    noteLayer = document.getElementById('noteLayer');
+    noteCount = 0;
+}
 
 function addNote(note) {
     if (noteCount >= maxNotes) return;
