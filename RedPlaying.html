@@ -58,13 +58,24 @@
 
   </div>
 
-  <script>
-    localStorage.removeItem("noteSequence");
-  </script>
-
-  <script src="src/musicSheet.js"></script>
   <!--啊踢-->
   <script>
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJCxy6B9-Gt3RnxJbiYi2w_uIRd-yfSFM",
+      authDomain: "bondjumaybeisthelast.firebaseapp.com",
+      projectId: "bondjumaybeisthelast",
+      storageBucket: "bondjumaybeisthelast.appspot.com",
+      messagingSenderId: "573258856356",
+      appId: "1:573258856356:web:503844c0fe7bee65aa7331"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const redRef = doc(db, "music_sequence", "red"); //這是球球順序
+
     let ws = new WebSocket('wss://websitetest-xx30.onrender.com');
     ws.addEventListener('message', (message) => {
       if (message.data == 'ping') {
@@ -76,28 +87,24 @@
         let valC = data['colorC'];
         if (valC == 1) {
           flash(document.querySelector('.ball.c'))
-          addNote('C');
         }
       }
       if ('colorM' in data) {
         let valM = data['colorM'];
         if (valM == 1) {
           flash(document.querySelector('.ball.m'))
-          addNote('M');
         }
       }
       if ('colorY' in data) {
         let valY = data['colorY'];
         if (valY == 1) {
           flash(document.querySelector('.ball.y'))
-          addNote('Y');
         }
       }
       if ('colorW' in data) {
         let valW = data['colorW'];
         if (valW == 1) {
           flash(document.querySelector('.ball.w'))
-          addNote('W');
         }
       }
     })
@@ -109,6 +116,12 @@
     }
 
     function flash(ball) {
+      const label = ball.querySelector('.label')?.textContent;
+      if (label) {
+        updateDoc(redRef, {
+          sequence: arrayUnion(label)
+        });
+      }
       // 避免重複收集
       if (ball.classList.contains("collected")) return;
 
@@ -135,12 +148,6 @@
   </script>
 
   <script type="module" src="src/RedPlayingTOROandFIRE.js"></script>
-
-  <script>
-    window.addEventListener("DOMContentLoaded", () => {
-        initMusicSheet(); // ⭐ 初始化必須加
-    });
-</script>
 
 
 </body>

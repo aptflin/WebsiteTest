@@ -13,6 +13,7 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const player = "red"; // 玩家在這邊啦！！！！
+    const redRef = doc(db, "music_sequence", "red"); //這是球球順序
 
     const arrow = document.querySelector(".arrow");
     const numberDisplay = document.getElementById("number");
