@@ -3,138 +3,83 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=844, height=390, initial-scale=1.0">
-    <title>Let's Try</title>
+    <title>Firebase Reset Panel</title>
     <style>
-        /* 背景 */
-        body,
-        html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top right, #dff6e6, #ccf3f9);
-            font-family: "M PLUS 1p", sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-
-            background-image: url('../src/BG.png');
-            /* 背景圖片 */
-            background-size: cover;
-            /* 背景圖片鋪滿 */
-            background-repeat: no-repeat;
-            /* 不要重複 */
-            background-position: center center;
-            /* 置中顯示 */
-        }
-
-        /* 整體容器 */
-        .container {
-            width: 844px;
-            height: 390px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        body {
+            font-family: Arial, sans-serif;
             text-align: center;
+            padding-top: 50px;
+            background-color: #f0f8ff;
         }
 
-        .try-hint img {
-            width: 300px;
-            height: 230px;
-            object-fit: contain;
-            margin-top: 35px;
-            animation: breathing 2s ease-in-out infinite;
-        }
-
-        /* 呼吸式放大縮小動畫 */
-        @keyframes breathing {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-                /* 放大到1.1倍 */
-            }
-
-            100% {
-                transform: scale(1);
-            }
-        }
-
-
-        /* 主標題 */
-        .main-title {
-            font-size: 36px;
-            color: #2d9999;
-            font-weight: 900;
-            margin-top: 3px;
-            margin-bottom: 2px;
-        }
-
-        /* 小文字說明 */
-        .sub-text {
-            font-size: 15px;
-            color: #2d9999;
-            line-height: 1.4;
-            font-weight: 700;
-            margin-top: 1px;
-            margin-bottom: 10px;
-        }
-
-        /* 箭頭按鈕 */
-        .arrow {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 150px;
-            height: 80px;
-            background-image: url('src/arrow.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding-right: 20px;
+        button {
+            font-size: 18px;
+            margin: 10px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background-color: #4ea59b;
+            color: white;
             cursor: pointer;
         }
 
-        /* 只有hover的時候才發光，而且順著透明邊緣 */
-        .arrow:hover {
-            filter: drop-shadow(0 0 10px #ffd5005e);
-            transition: all 0.3s ease;
-        }
-
-        /* 文字動畫 */
-        .arrow-text {
-            color: #D9AD0F;
-            font-weight: 900;
-            font-size: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .arrow:hover .arrow-text {
-            transform: scale(1.2);
+        button:hover {
+            background-color: #3b877f;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="try-hint">
-            <img src="src/try.png" alt="提示動畫">
-        </div>
-        <h1 class="main-title">Let's Try!</h1>
-        <p class="sub-text">請看著平台<br>試著上下移動手機。</p>
+    <h1>Firebase 重置面板</h1>
+    <button id="resetPlayers">重置準備狀態</button>
+    <button id="clearOwner">清空結果人</button>
+    <button id="clearSequence">清空樂譜<br>(第一次就好)</button>
 
-        <div class="arrow" onclick='window.location.href = "BlueReady.html"'>
-            <span class="arrow-text">NEXT</span>
-        </div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXc1N4_X4_QCJ9ylNYR5S2_UjlqB-dgEQ",
+            authDomain: "bondju-58069.firebaseapp.com",
+            projectId: "bondju-58069",
+            storageBucket: "bondju-58069.firebasestorage.app",
+            messagingSenderId: "773554844066",
+            appId: "1:773554844066:web:862be0067cbab41fb342fb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const gameDocRef = doc(db, "game", "s1");
+        const musicDocRef = doc(db, "music_sequence", "red");
+
+        // 重置 Blue/Red/Green 為 false
+        document.getElementById("resetPlayers").addEventListener("click", async () => {
+            await updateDoc(gameDocRef, {
+                "players.Blue": false,
+                "players.Red": false,
+                "players.Green": false
+            });
+            alert("✅ 已重置玩家準備狀態！");
+        });
+
+        // 清空 resultOwner
+        document.getElementById("clearOwner").addEventListener("click", async () => {
+            await updateDoc(gameDocRef, {
+                resultOwner: ""
+            });
+            alert("✅ 已清空結果擁有者！");
+        });
+
+        // 清空樂譜
+        document.getElementById("clearSequence").addEventListener("click", async () => {
+            await updateDoc(musicDocRef, {
+                sequence: []
+            });
+            alert("✅ 已清空樂譜！");
+        });
+    </script>
 </body>
 
 </html>
