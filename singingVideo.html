@@ -113,10 +113,7 @@
 
     <!-- 🎬 背景影片 -->
     <video src="src/jin.mp4" autoplay muted loop></video>
-
-    <!-- 🔊 背景音樂 -->
-    <audio id="bgm" src="src/bgm.mp3" autoplay loop></audio>
-
+    <audio src="src/bgm.mp3" id="bgm"></audio>
 
     <!-- 🎼 樂譜區浮在影片上 -->
     <div class="staff-area">
@@ -130,6 +127,8 @@
         <img src="src/clef.png" class="clef" />
         <div class="note-layer" id="noteLayer"></div>
     </div>
+
+
 
     <!-- 🔥 JS：自動讀取 Firebase 並播放 -->
     <script type="module">
@@ -187,16 +186,13 @@
                 const current = noteSequence[i % noteSequence.length];
                 current.audio.currentTime = 0;
                 current.audio.play();
+
                 current.element.classList.add(noteSettings[current.note].glowClass);
 
                 i++;
             }, 500);
         }
 
-        bgm = document.getElementById('bgm');
-
-
-        // 一進頁面自動播放樂譜
         window.addEventListener("DOMContentLoaded", async () => {
             const snap = await getDoc(redRef);
             if (snap.exists()) {
@@ -206,9 +202,26 @@
 
                 sequence.forEach((note, i) => addNote(note, i));
                 playNotesInLoop();
-                bgm.audio.play();
             }
+
+            // 👇 加這行來支援點擊任意畫面播放 bgm
+            document.body.addEventListener("click", handleUserInteractionOnce, { once: true });
         });
+
+        function handleUserInteractionOnce() {
+            const bgm = document.getElementById('bgm');
+            bgm.volume = 0.3;
+            bgm.loop = true;
+
+            bgm.play()
+                .then(() => {
+                    console.log("✅ BGM 播放成功");
+                })
+                .catch((err) => {
+                    console.warn("⚠️ 無法播放 BGM（可能是瀏覽器限制）", err);
+                });
+        }
+
     </script>
 
 </body>
