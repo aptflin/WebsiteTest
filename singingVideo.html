@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>結果畫面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'M PLUS 1p', sans-serif;
+        }
+
+        body {
+            position: relative;
+            background: black;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .staff-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            pointer-events: none;
+        }
+
+        .staff-lines {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            
+        }
+
+        .staff-line {
+            height: 3px;
+            background-color: white;
+            box-shadow: 10px 2px 10px black;
+            opacity: 0.6;
+        }
+
+        .clef {
+            position: absolute;
+            left: 30px;
+            bottom: -15px;
+            height: 200px;
+            z-index: 1;
+           
+        }
+
+        .note-layer {
+            position: absolute;
+            top: 0;
+            left: 50px;
+            height: 100%;
+            width: calc(100% - 60px);
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .note {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 25px 6px rgba(161, 255, 255, 0.9);
+            transform: scale(1.6);
+        }
+
+        .glow-magenta {
+            box-shadow: 0 0 25px 6px rgba(255, 165, 252, 0.9);
+            transform: scale(1.6);
+        }
+
+        .glow-yellow {
+            box-shadow: 0 0 25px 6px rgba(255, 250, 151, 0.9);
+            transform: scale(1.6);
+        }
+
+        .glow-white {
+            box-shadow: 0 0 25px 10px rgba(255, 255, 255, 0.95);
+            transform: scale(1.6);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 🎬 背景影片 -->
+    <video src="src/jin.mp4" autoplay muted loop></video>
+
+    <!-- 🎼 樂譜區浮在影片上 -->
+    <div class="staff-area">
+        <div class="staff-lines">
+            <div class="staff-line"></div>
+            <div class="staff-line"></div>
+            <div class="staff-line"></div>
+            <div class="staff-line"></div>
+            <div class="staff-line"></div>
+        </div>
+        <img src="src/clef.png" class="clef" />
+        <div class="note-layer" id="noteLayer"></div>
+    </div>
+
+    <!-- 🔥 JS：自動讀取 Firebase 並播放 -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCXc1N4_X4_QCJ9ylNYR5S2_UjlqB-dgEQ",
+            authDomain: "bondju-58069.firebaseapp.com",
+            projectId: "bondju-58069",
+            storageBucket: "bondju-58069.appspot.com",
+            messagingSenderId: "773554844066",
+            appId: "1:773554844066:web:862be0067cbab41fb342fb"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const redRef = doc(db, "music_sequence", "red");
+
+        const noteLayer = document.getElementById("noteLayer");
+        const noteSequence = [];
+
+        const noteSettings = {
+            C: { color: '#A1FFFF', top: 99, sound: 'src/C.mp3', glowClass: 'glow-cyan' },
+            M: { color: '#FFA5FC', top: 75, sound: 'src/M.mp3', glowClass: 'glow-magenta' },
+            Y: { color: '#FFFA97', top: 50, sound: 'src/Y.mp3', glowClass: 'glow-yellow' },
+            W: { color: 'white', top: 25, sound: 'src/W.mp3', glowClass: 'glow-white' }
+        };
+
+        function addNote(note, index) {
+            const info = noteSettings[note];
+            const el = document.createElement("div");
+            el.classList.add("note");
+            el.style.backgroundColor = info.color;
+            el.style.top = `${info.top}px`;
+            el.style.left = `${index * 10.5 + 13}%`;
+            el.style.position = "absolute";
+            noteLayer.appendChild(el);
+
+            noteSequence.push({ note, audio: new Audio(info.sound), element: el });
+        }
+
+        function playNotesInLoop() {
+            let i = 0;
+            setInterval(() => {
+                if (noteSequence.length === 0) return;
+
+                // 清除前一顆音的光暈
+                if (i > 0) {
+                    const prev = noteSequence[(i - 1) % noteSequence.length];
+                    prev.element.classList.remove(noteSettings[prev.note].glowClass);
+                }
+
+                // 播放當前音
+                const current = noteSequence[i % noteSequence.length];
+                current.audio.currentTime = 0;
+                current.audio.play();
+                current.element.classList.add(noteSettings[current.note].glowClass);
+
+                i++;
+            }, 500);
+        }
+
+
+        // 一進頁面自動播放樂譜
+        window.addEventListener("DOMContentLoaded", async () => {
+            const snap = await getDoc(redRef);
+            if (snap.exists()) {
+                const sequence = snap.data().sequence || [];
+                noteLayer.innerHTML = '';
+                noteSequence.length = 0;
+
+                sequence.forEach((note, i) => addNote(note, i));
+                playNotesInLoop();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
