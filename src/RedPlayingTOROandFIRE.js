@@ -18,15 +18,18 @@ const arrow = document.querySelector(".arrow");
 const numberDisplay = document.getElementById("number");
 
 let lastSentTime = 0;
+let lastMotorAngle = null; // 記錄上一次的馬達角度
+const ANGLE_THRESHOLD = 30; // 角度變化閾值，超過這個值才認為是異常跳躍
+
 
 function rotating() {
     window.addEventListener('deviceorientation', async (event) => {
         let gamma = event.gamma;
 
         let bulu;
-        if (gamma >= 55 && gamma <= 90) {
+        if (gamma >= 42 && gamma <= 90) {
             bulu = 0;
-        } else if (gamma >= 0 && gamma < 55) {
+        } else if (gamma >= 0 && gamma < 42) {
             bulu = 110;
         } else {
             bulu = 90 - (-gamma);
@@ -34,7 +37,29 @@ function rotating() {
             else if (bulu > 110) bulu = 110;
         }
 
-        const motorAngle = Math.round((110 - bulu) / 110 * 180);
+        let motorAngle = Math.round((110 - bulu) / 110 * 90);
+        
+        // 角度平滑處理：避免突然跳躍
+        if (lastMotorAngle !== null) {
+            const angleDiff = Math.abs(motorAngle - lastMotorAngle);
+            
+            // 如果角度變化超過閾值，可能是異常跳躍
+            if (angleDiff > ANGLE_THRESHOLD) {
+                // 檢查是否是90->0或0->90的跳躍
+                if ((lastMotorAngle >= 85 && motorAngle <= 5) || 
+                    (lastMotorAngle <= 5 && motorAngle >= 85)) {
+                    // 保持上一次的角度，不進行跳躍
+                    motorAngle = lastMotorAngle;
+                }
+            }
+        }
+        
+        // 確保角度在0-90範圍內
+        motorAngle = Math.max(0, Math.min(90, motorAngle));
+        
+        // 更新記錄
+        lastMotorAngle = motorAngle;
+        
         numberDisplay.textContent = `馬達角度：${motorAngle}`;
         arrow.style.transform = `rotateX(${bulu}deg)`;
 
@@ -58,7 +83,6 @@ function rotating() {
             document.body.style.transform = "rotate(0deg)";
         }
     });
-
 }
 
 arrow.addEventListener("click", () => {
